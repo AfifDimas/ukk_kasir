@@ -14,18 +14,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call([
+            PenjualanSeeder::class,
+            ProdukSeeder::class,
+        ]); 
+
         // User::factory(10)->create();
 
-    //     User::factory()->create([
-    //         'name' => 'admin',
-    //         'email' => 'admin@gmail.com',
-    //     ]);
+        // User::factory()->create([
+        //     'name' => 'admin',
+        //     'email' => 'admin@gmail.com',
+        // ]);
     User::factory()->create([
         'name' => 'admin',
         'last_name' => 'admin',
         'email' => 'admin@gmail.com',
-        'password' => 'admin'
-
+        'password' => 'admin',
+        'level' => '1'
+    ]);
+    User::factory()->create([
+        'name' => 'kasir',
+        'last_name' => 'kasir',
+        'email' => 'kasir@gmail.com',
+        'password' => '123',
+        'level' => '2'
     ]);
     }
 }

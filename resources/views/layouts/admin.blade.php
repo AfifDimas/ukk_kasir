@@ -18,6 +18,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendor/dataTables/dataTables.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendor/dataTables/DataTables/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
 
     <!-- Favicon -->
     <link href="{{ asset('img/favicon.png') }}" rel="icon" type="image/png">
@@ -81,7 +83,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-body">Yakin Ingin Logout</div>
             <div class="modal-footer">
                 <button class="btn btn-link" type="button" data-dismiss="modal">{{ __('Cancel') }}</button>
                 <a class="btn btn-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
@@ -98,5 +100,15 @@
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+<script src="{{ asset('vendor/dataTables/datatables.min.js') }}"></script>
+<script src="{{ asset('vendor/dataTables/DataTables/js/dataTables.bootstrap5.min.js') }}"></script>
+
+
+<script>
+    // new DataTable('#datatable');
+</script>
+
+@yield('script')
+
 </body>
 </html>
