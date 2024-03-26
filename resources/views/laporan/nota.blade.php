@@ -170,20 +170,20 @@
                 <tr class="item">
                     <td>total</td>
 
-                    <td>{{ $transaksi[0]->total_harga }}</td>
+                    <td>Rp. {{ $transaksi[0]->total_harga }}</td>
                 </tr>
 
                 
                 <tr class="item last">
                     <td>Uang</td>
                     
-                    <td>{{ $transaksi[0]->diterima }}</td>
+                    <td>Rp. {{ $transaksi[0]->diterima }}</td>
                 </tr>
                 
                 <tr class="total">
                     <td></td>
 
-                    <td>Kembalian: {{ $transaksi[0]->kembalian }}</td>
+                    <td>Kembalian: Rp. {{ $transaksi[0]->kembalian }}</td>
                 </tr>
             </table>
             <br>

@@ -46,10 +46,10 @@
                     <form action="{{ route('penjualan.simpan') }}" class="form-penjualan" method="post">
                         @csrf
                         @method('put')
-                        <input type="hidden" name="id_transaksi" value="{{ $id_transaksi }}">
-                        <input type="hidden" name="total" id="total" value="{{ $total_transaksi }}">
-                        <input type="hidden" name="total_item" id="total_item" value="{{ $total_item }}">
-                        <input type="hidden" name="kembalian" id="kembalian" value="{{ $total_transaksi }}">
+                        <input type="hidden" name="total" id="total" value="">
+                        <input type="hidden" name="kembalian" id="kembalian" value="">
+                        <input type="hidden" name="dbDiterima" id="dbDiterima" value="">
+                        <input type="hidden" name="dbKembali" id="dbKembali">
 
                         <div class="form-group row">
                             <label for="totalrp" class="col-lg-3 control-label">Total</label>
@@ -323,9 +323,11 @@
                     $('#diskon').val(response.diskon);
                     $('#totalrp').val('Rp. ' + response.subtotal);
                     $('#bayarrp').val('Rp. ' + response.subtotal);
+                    $('#total').val(response.db_subtotal);
                     $('#diterima').val('Rp. ' + response.diterima);
-                    $('#total').val('Rp. ' + response.subtotal);
-                    $('#kembalian').val('Rp. ' + response.kembali);
+                    $('#kembalian').val(response.kembali);
+                    $('#dbKembali').val(response.db_kembali);
+                    $('#dbDiterima').val(response.db_diterima);
                 })
                 .fail(errors => {
                     // alert('tidak dapat menampilkan data');

@@ -138,8 +138,8 @@ class PenjualanController extends Controller
 
         $transaksi[0]->total_harga = $request->total;
         $transaksi[0]->jumlah_barang = $jumlahBarang;
-        $transaksi[0]->diterima = $request->diterima;
-        $transaksi[0]->kembalian = $request->kembali;
+        $transaksi[0]->diterima = $request->dbDiterima;
+        $transaksi[0]->kembalian = $request->dbKembali;
 
         $transaksi[0]->update();
         
@@ -156,9 +156,5 @@ class PenjualanController extends Controller
 
         return redirect()->route('penjualan')->withSuccess('Transaksi Berhasil Dibatalkan');
         
-    }
-
-    public function cetakNota() {
-
     }
 }

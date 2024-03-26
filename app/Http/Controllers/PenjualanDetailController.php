@@ -116,6 +116,9 @@ class PenjualanDetailController extends Controller
             'diterima' => number_format($diterima),
             'subtotal' => number_format($subtotal),
             'kembali' => number_format($kembali),
+            'db_diterima' => $diterima,
+            'db_subtotal' => $subtotal,
+            'db_kembali' => $kembali,
         ];
 
         return response()->json($data);

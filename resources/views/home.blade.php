@@ -69,7 +69,7 @@
                                         @if ($widget['transaksi'] <= 1)
                                             1
                                         @else
-                                        {{ $widget['transaksi'] - 1 }}
+                                        {{ $widget['transaksi'] }}
                                         @endif
                                     </div>
                                 </div>

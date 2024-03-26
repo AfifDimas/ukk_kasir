@@ -27,17 +27,17 @@ class HomeController extends Controller
     public function index()
     {
         $users = User::count();
-        $hariIni = date('yy-m-d');
-        $pendapatan = number_format(Penjualan::where('created_at', 'LIKE', '%$hariIni%')->SUM('total_harga'));
+        $hariIni = date('Y-m-d');
+        $pendapatan = Penjualan::where('created_at', 'LIKE', '%'.$hariIni.'%')->SUM('total_harga');
         // dd($pendapatan);
         $produk = Produk::count();
-        $transaksiHariIni = Penjualan::where('created_at', 'LIKE', '%$hariIni%')->count();
+        $transaksiHariIni = Penjualan::where('created_at', 'LIKE', '%'.$hariIni.'%')->count();
         // $tanggalAwal = date('Y-m-d', mktime(0, 0, 0, date('m'), 1, date('Y')));
 
 
         $widget = [
             'users' => $users,
-            'pendapatan' => $pendapatan,
+            'pendapatan' => number_format($pendapatan),
             'produk' => $produk,
             'transaksi' => $transaksiHariIni,
         ];
