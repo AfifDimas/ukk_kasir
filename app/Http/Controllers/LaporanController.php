@@ -41,6 +41,18 @@ class LaporanController extends Controller
         return datatables()
             ->of($data)
             ->addIndexColumn()
+            ->addColumn('harga_total', function($data) {
+                return 'Rp. ' . number_format($data->total_harga);
+            })
+            ->addColumn('uang', function($data) {
+                return 'Rp. ' . number_format($data->diterima);
+            })
+            ->addColumn('kembali', function($data) {
+                return 'Rp. ' . number_format($data->kembalian);
+            })
+            ->addColumn('subTotal', function($data) {
+                return 'Rp. ' . number_format($data->subtotal);
+            })
             ->addColumn('tanggal', function($data) {
                 return substr($data->created_at, 8, 2) . '-' . substr($data->created_at, 5, 2) . '-' . substr($data->created_at, 0, 4);
             })

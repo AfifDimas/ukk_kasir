@@ -28,13 +28,15 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col">No.</th>
+                                    <th width="5%" scope="col">No.</th>
                                     <th scope="col">Jumlah Barang</th>
-                                    <th scope="col">total Harga</th>
+                                    <th scope="col">Total Harga</th>
+                                    <th scope="col">Diskon %</th>
+                                    <th scope="col">Subtotal</th>
                                     <th scope="col">Diterima</th>
                                     <th scope="col">Kembalian</th>
-                                    <th scope="col">jam Beli</th>
-                                    <th scope="col">Aksi</th>
+                                    <th scope="col">Tanggal</th>
+                                    <th width="10%" scope="col">Aksi</th>
                                 </tr>
                             </thead>
                         </table>
@@ -94,13 +96,19 @@
                         data: 'jumlah_barang'
                     },
                     {
-                        data: 'total_harga'
+                        data: 'harga_total'
                     },
                     {
-                        data: 'diterima'
+                        data: 'diskon'
                     },
                     {
-                        data: 'kembalian'
+                        data: 'subTotal'
+                    },
+                    {
+                        data: 'uang'
+                    },
+                    {
+                        data: 'kembali'
                     },
                     {
                         data: 'tanggal'

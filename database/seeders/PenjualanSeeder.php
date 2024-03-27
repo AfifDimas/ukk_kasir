@@ -16,6 +16,8 @@ class PenjualanSeeder extends Seeder
         Penjualan::factory()->create([
             'jumlah_barang' => '0',
             'total_harga' => '0',
+            'diskon' => '0',
+            'subtotal' => '0',
             'diterima' => '0',
             'kembalian' => '0',
         ]);

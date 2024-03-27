@@ -41,22 +41,6 @@ class PenjualanDetailController extends Controller
             ->make(true);
     }
 
-    public function update(Request $request)
-    {
-        $transaksi = Penjualan::findOrFail($request->id_transaksi);
-        
-        $transaksi->jumlah_barang = $request->total_item;
-        $transaksi->total_harga = $request->total;
-        $transaksi->update();
-
-        $penjualan = new Penjualan();
-        $penjualan->jumlah_barang = 0;
-        $penjualan->total_harga = 0;
-        $penjualan->save();
-
-        return redirect()->route('penjualan')->withSuccess('Transaksi Berhasil Disimpan');
-
-    }
 
     public function tambahProduk(Request $request)
     {
@@ -75,7 +59,7 @@ class PenjualanDetailController extends Controller
         $penjualanDetail->jumlah = 1;
         $penjualanDetail->harga = $produk->harga;
         $penjualanDetail->total = $produk->harga;
-        $penjualanDetail->ditambahkan_tgl = date('y-m-d');
+        $penjualanDetail->ditambahkan_tgl = date('Y-m-d');
         $penjualanDetail->save();
 
         return response()->json('data Berhasil Disimpan', 200);
@@ -97,26 +81,26 @@ class PenjualanDetailController extends Controller
 
         $produkDetail = PenjualanDetail::where('id', $id)->get();
         // dd($produkDetail->all());
-        $produk = Produk::where('id', $produkDetail[0]->id_barang)->get();
-        $produk[0]->jumlah += $produkDetail[0]->jumlah;
-
-        $produk[0]->update();
 
         PenjualanDetail::destroy($id);
         return redirect()->route('penjualan');
     }
 
-    public function loadForm( $diskon = 0, $subtotal = 0, $diterima = 0)
+    public function loadForm( $diskon = 0, $total = 0, $diterima = 0)
     {
+
+        $subtotal = $total - ($total * ($diskon / 100));
 
         $kembali = $diterima - $subtotal;
 
         $data = [
-            'diskon' => 0,
+            'diskon' => $diskon,
             'diterima' => number_format($diterima),
+            'total' => number_format($total),
             'subtotal' => number_format($subtotal),
             'kembali' => number_format($kembali),
             'db_diterima' => $diterima,
+            'db_total' => $total,
             'db_subtotal' => $subtotal,
             'db_kembali' => $kembali,
         ];

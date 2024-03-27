@@ -121,6 +121,8 @@ class PenjualanController extends Controller
         $penjualan = new Penjualan();
         $penjualan->jumlah_barang = 0;
         $penjualan->total_harga = 0;
+        $penjualan->diskon = 0;
+        $penjualan->subtotal = 0;
         $penjualan->diterima = 0;
         $penjualan->kembalian = 0;
 
@@ -131,17 +133,35 @@ class PenjualanController extends Controller
 
     public function update(Request $request)
     {
+        if($request->dbDiterima <= 0) {
+            return redirect()->route('penjualan')->withSuccess('Uang pembeli Belum di input');
+        }
+
         $transaksi = Penjualan::orderBy('id', 'desc')->limit(1)->get();
         $detail = PenjualanDetail::where('id_transaksi', $transaksi[0]->id)->get();
         $jumlahBarang = PenjualanDetail::where('id_transaksi', $transaksi[0]->id)->SUM('jumlah');
 
 
         $transaksi[0]->total_harga = $request->total;
+        $transaksi[0]->subtotal = $request->subtotal1;
+        $transaksi[0]->diskon = $request->diskon;
         $transaksi[0]->jumlah_barang = $jumlahBarang;
         $transaksi[0]->diterima = $request->dbDiterima;
         $transaksi[0]->kembalian = $request->dbKembali;
 
         $transaksi[0]->update();
+
+
+        $dataPenjualan = PenjualanDetail::where('id_transaksi', $transaksi[0]->id)->get();
+
+        foreach($dataPenjualan as $data) {
+            $produk = Produk::find($data->id_barang);
+            $penjualan = PenjualanDetail::where('id_transaksi', $transaksi[0]->id)
+                ->where('id_barang',  $data->id_barang)->get();
+
+            $produk->jumlah -= $penjualan[0]->jumlah;
+            $produk->update();
+        }
         
         return redirect()->route('penjualan')->withSuccess('Cetak Nota');
 

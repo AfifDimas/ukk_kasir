@@ -4,10 +4,13 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800">{{ __('Pesanan') }}</h1>
 
-    @if (session('status'))
-        <div class="alert alert-success border-left-success" role="alert">
-            {{ session('status') }}
-        </div>
+    @if (session('success'))
+    <div class="alert alert-success border-left-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     @endif
 
     <div class="row">
@@ -47,6 +50,7 @@
                         @csrf
                         @method('put')
                         <input type="hidden" name="total" id="total" value="">
+                        <input type="hidden" name="subtotal1" id="subtotal1" value="">
                         <input type="hidden" name="kembalian" id="kembalian" value="">
                         <input type="hidden" name="dbDiterima" id="dbDiterima" value="">
                         <input type="hidden" name="dbKembali" id="dbKembali">
@@ -58,10 +62,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="diskon" class="col-lg-3 control-label">Diskon</label>
+                            <label for="diskon" class="col-lg-3 control-label">Diskon (%)</label>
                             <div class="col-lg-9">
-                                <input type="number" name="diskon" id="diskon" class="form-control" value="0"
-                                    readonly>
+                                <input type="number" name="diskon" id="diskon" class="form-control" value="">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -86,20 +89,15 @@
                         <div class="btn-group mb-3">
                             <button type="submit" class="btn btn-xs btn-primary btn-flat">Konfirmasi</button>
                             <button class="btn btn-xs btn-danger btn-flat" onclick="batal()">batal</button>
-                            {{-- <a href="{{ route('penjualan.batal') }}" class="btn btn-xs btn-danger btn-flat">Batal</a> --}}
-
                         </div>
 
 
                     </form>
                     @if (session('success'))
-                        <button class="btn btn-info"
-                            onclick="cetakNota('{{ route('cetakNota') }}')">Cetak Nota</button>
-                        @elseif ($total_item > 0)
-                            <button class="btn btn-info"
-                                onclick="cetakNota('{{ route('cetakNota') }}')">Cetak Nota</button>
-
-                        @endif
+                        <button class="btn btn-info" onclick="cetakNota('{{ route('cetakNota') }}')">Cetak Nota</button>
+                    @elseif ($total_item != 0)
+                        <button class="btn btn-info" onclick="cetakNota('{{ route('cetakNota') }}')">Cetak Nota</button>
+                    @endif
 
 
                 </div>
@@ -288,7 +286,8 @@
 
         function hapusData(id) {
             var id = id;
-            if (confirm("Yakin Ingin Menghapus data!!")) {
+            var alert = confirm("Yakin Ingin Menghapus data!!");
+            if (alert) {
                 $.post(`{{ url('/penjualan/hapusData') }}/${id}`, {
                         '_token': $('[name=csrf-token]').attr('content'),
                         '_method': 'delete',
@@ -305,7 +304,7 @@
             }
         }
 
-        function loadForm(diskon = 0, diterima) {
+        function loadForm(diskon , diterima) {
             var subtotal = ($('#subtotal').val());
             $('#totalrp').val('Rp. ' + subtotal);
             $('#bayarrp').val('Rp. ' + subtotal);
@@ -314,16 +313,17 @@
                 diterima == 0;
             }
 
-            $.post(`{{ url('/penjualanDetail/loadForm') }}/0/${$('#subtotal').val()}/${diterima}`, {
+            $.post(`{{ url('/penjualanDetail/loadForm') }}/${$('#diskon').val()}/${$('#subtotal').val()}/${diterima}`, {
                     '_token': $('[name=csrf-token]').attr('content'),
                     '_method': 'get',
                 })
                 .done(response => {
                     $('#kembali').val('Rp. ' + response.kembali);
                     $('#diskon').val(response.diskon);
-                    $('#totalrp').val('Rp. ' + response.subtotal);
+                    $('#totalrp').val('Rp. ' + response.total);
                     $('#bayarrp').val('Rp. ' + response.subtotal);
-                    $('#total').val(response.db_subtotal);
+                    $('#total').val(response.db_total);
+                    $('#subtotal1').val(response.db_subtotal);
                     $('#diterima').val('Rp. ' + response.diterima);
                     $('#kembalian').val(response.kembali);
                     $('#dbKembali').val(response.db_kembali);

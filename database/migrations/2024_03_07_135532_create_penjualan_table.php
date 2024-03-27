@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('jumlah_barang');
             $table->String('total_harga');
+            $table->String('diskon');
+            $table->String('subtotal');
             $table->string('diterima');
             $table->string('kembalian');
             $table->timestamps();

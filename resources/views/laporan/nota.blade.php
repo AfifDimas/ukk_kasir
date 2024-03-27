@@ -108,14 +108,10 @@
                         <table>
                             <tr>
                                 <td class="title">
-                                    <img
-                                        src="{{ asset('img/favicon.png') }}"
-                                        style="width: 50%; max-width: 100px"
-                                    />
                                 </td>
 
                                 <td>
-                                    Jam: {{ $transaksi[0]->updated_at }}<br />
+                                    {{ $transaksi[0]->updated_at }}<br />
                                 </td>
                             </tr>
                         </table>
@@ -158,32 +154,32 @@
                 <tr class="heading">
                     <td>Subtotal</td>
 
-                    <td>{{ $transaksi[0]->total_harga }}</td>
+                    <td>Rp. {{ number_format($transaksi[0]->total_harga) }}</td>
                 </tr>
                 
                 <tr class="item">
                     <td>Diskon</td>
 
-                    <td>0%</td>
+                    <td>{{ $transaksi[0]->diskon }}%</td>
                 </tr>
 
                 <tr class="item">
                     <td>total</td>
 
-                    <td>Rp. {{ $transaksi[0]->total_harga }}</td>
+                    <td>Rp. {{ number_format($transaksi[0]->subtotal) }}</td>
                 </tr>
 
                 
                 <tr class="item last">
                     <td>Uang</td>
                     
-                    <td>Rp. {{ $transaksi[0]->diterima }}</td>
+                    <td>Rp. {{ number_format($transaksi[0]->diterima) }}</td>
                 </tr>
                 
                 <tr class="total">
                     <td></td>
 
-                    <td>Kembalian: Rp. {{ $transaksi[0]->kembalian }}</td>
+                    <td>Kembalian: Rp. {{ number_format($transaksi[0]->kembalian) }}</td>
                 </tr>
             </table>
             <br>
