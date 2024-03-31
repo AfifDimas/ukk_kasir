@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\models\Penjualan;
 use App\models\PenjualanDetail;
+use App\models\Pelanggan;
 use Reflection;
 
 use PDF;
@@ -52,6 +53,7 @@ class PenjualanController extends Controller
             ->make(true);
     }
 
+    // data untuk transaksi
     public function data()
     {
         $transaksi = Penjualan::orderBy('id', 'desc')->limit(1)->get();
@@ -118,7 +120,11 @@ class PenjualanController extends Controller
 
     public function create()
     {
+
+        $pelanggan = Pelanggan::orderBy('id', 'desc')->limit(1)->get();
+
         $penjualan = new Penjualan();
+        $penjualan->pelanggan_id = $pelanggan[0]->id;
         $penjualan->jumlah_barang = 0;
         $penjualan->total_harga = 0;
         $penjualan->diskon = 0;

@@ -14,6 +14,7 @@ class PenjualanSeeder extends Seeder
     public function run(): void
     {
         Penjualan::factory()->create([
+            'pelanggan_id' => 1,
             'jumlah_barang' => '0',
             'total_harga' => '0',
             'diskon' => '0',

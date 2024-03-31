@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\Penjualan;
 use App\Models\PenjualanDetail;
-use Barryvdh\DomPDF\PDF as DomPDFPDF;
-use Yajra\DataTables\Facades\Datatables;
+use App\Models\Pelanggan;
 use PDF;
+use Yajra\DataTables\Facades\Datatables;
+
 
 class LaporanController extends Controller
 {
@@ -41,6 +42,10 @@ class LaporanController extends Controller
         return datatables()
             ->of($data)
             ->addIndexColumn()
+            ->addColumn('nama_pembeli', function($data) {
+                $pelanggan = Pelanggan::where('id', $data->pelanggan_id)->get();
+                return $pelanggan[0]->nama_pelanggan;
+            })
             ->addColumn('harga_total', function($data) {
                 return 'Rp. ' . number_format($data->total_harga);
             })
@@ -49,6 +54,9 @@ class LaporanController extends Controller
             })
             ->addColumn('kembali', function($data) {
                 return 'Rp. ' . number_format($data->kembalian);
+            })
+            ->addColumn('diskon%', function($data) {
+                return number_format($data->diskon). '%';
             })
             ->addColumn('subTotal', function($data) {
                 return 'Rp. ' . number_format($data->subtotal);
@@ -69,7 +77,7 @@ class LaporanController extends Controller
 
     public function cetakPDF(Request $request) 
     {
-        $tgl1 = $request->tanggal1;
+        $tgl = $request->tanggal1;
 
         // mengambil dataID dari tabel barang
         $produks = Produk::get();
@@ -77,7 +85,7 @@ class LaporanController extends Controller
         foreach ($produks as $produk) {
             $row = array();
             $jmlProduk = PenjualanDetail::where('id_barang', $produk->id)
-                ->where('ditambahkan_tgl', $tgl1)    
+                ->where('ditambahkan_tgl', $tgl)    
                 ->SUM('jumlah');
 
             $row['nama_barang'] =  $produk->nama;
@@ -87,11 +95,11 @@ class LaporanController extends Controller
             $totalTransaksi[] = $row;
         }
 
-        $tanggal = $tgl1;
+        $tanggal = $tgl;
 
         $pdf = PDF::loadView('laporan.laporanPDF', compact('totalTransaksi', 'tanggal'));
     
-        return $pdf->download('laporan-penjualan-' . $tgl1 . '.pdf');
+        return $pdf->download('laporan-penjualan-' . $tanggal . '.pdf');
     }
 
     public function cetakNota()

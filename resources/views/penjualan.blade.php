@@ -4,22 +4,13 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800">{{ __('Pesanan') }}</h1>
 
-    @if (session('success'))
-    <div class="alert alert-success border-left-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    @endif
-
     <div class="row">
         <div class="col-md-8">
             <div class="card shadow">
                 <div class="card-body">
                     <div class="btn-group mb-2">
                         <button onclick="addProduk()" class="btn btn-xs btn-primary btn-flat">+</button>
-                        <a href="{{ route('penjualan.baru') }}" class="btn btn-xs btn-info btn-flat">Transaksi Baru</a>
+                        <button onclick="pelangganBaru()" class="btn btn-xs btn-info btn-flat">Transaksi Baru</button>
                     </div>
                     <div class="col-md-12">
                         <div class="table-responsive">
@@ -62,10 +53,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="diskon" class="col-lg-3 control-label">Diskon (%)</label>
+                            <label for="diskon" class="col-lg-3 control-label">Diskon</label>
                             <div class="col-lg-9">
-                                <input type="number" name="diskon" id="diskon" class="form-control" value="">
+                                <select name="diskon" id="diskon" class="form-control">
+                                    <option value="0">0%</option>
+                                    <option value="1">1%</option>
+                                    <option value="3">3%</option>
+                                    <option value="5">5%</option>
+                                    <option value="10">10%</option>
+                                </select>
                             </div>
+
                         </div>
                         <div class="form-group row">
                             <label for="bayar" class="col-lg-3 control-label">Bayar</label>
@@ -95,8 +93,6 @@
                     </form>
                     @if (session('success'))
                         <button class="btn btn-info" onclick="cetakNota('{{ route('cetakNota') }}')">Cetak Nota</button>
-                    @elseif ($total_item != 0)
-                        <button class="btn btn-info" onclick="cetakNota('{{ route('cetakNota') }}')">Cetak Nota</button>
                     @endif
 
 
@@ -106,6 +102,40 @@
 
     </div>
 
+    {{-- modal transaksi baru --}}
+    <div class="modal fade" id="modalTransaksiBaru" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">{{ __('Transaksi Baru') }}</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('pelanggan.new') }}">
+                        <div class="form-group">
+                            <label for="nama_pelanggan">Nama Pelanggan</label>
+                            <input type="text" class="form-control" name="nama_pelanggan" id="nama_pelanggan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="alamat">Alamat</label>
+                            <input type="text" class="form-control" name="alamat" id="alamat" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nomor_telepon">Nomor Telepon</label>
+                            <input type="text" class="form-control" name="nomor_telepon" id="nomor_telepon" required>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button class="btn btn-primary" type="submit">Simpan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- modal Tambah Produk --}}
     <div class="modal fade" id="addProdukModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -136,14 +166,39 @@
             </div>
         </div>
     </div>
+
+
+    {{-- modal nota --}}
+    <div class="modal fade" id="modalNota" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <center>
+                        <h5 class="modal-title" id="staticBackdropLabel">{{ __('Silahkan Print Nota Pembayaran') }}</h5>
+
+                    </center>
+                </div>
+                <div class="modal-body">
+                    <center>
+                        <button class="btn btn-info" onclick="cetakNota('{{ route('cetakNota') }}')">Cetak Nota</button>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
+    @if (session('success'))
+        <script>
+            $('#modalNota').modal('show')
+        </script>
+    @endif
     <script type="text/javascript">
         let table, table1;
 
         $(function() {
-            // loadForm($('#subtotal').val(), $('#diterima').val());
             table = $('#tableAllProduks').DataTable({
                 searching: true,
                 autoWidth: false,
@@ -245,8 +300,9 @@
 
         });
 
-
-
+        function pelangganBaru() {
+            $('#modalTransaksiBaru').modal('show')
+        }
 
         function addProduk() {
             $('#addProdukModal').modal('show')
@@ -294,7 +350,6 @@
                         'id': id
                     })
                     .done(response => {
-                        // table1.ajax.reload(loadForm();
                         table1.ajax.reload(() => loadForm($('#diskon').val(), $('#diterima').val()));
 
                     })
@@ -304,7 +359,7 @@
             }
         }
 
-        function loadForm(diskon , diterima) {
+        function loadForm(diskon, diterima) {
             var subtotal = ($('#subtotal').val());
             $('#totalrp').val('Rp. ' + subtotal);
             $('#bayarrp').val('Rp. ' + subtotal);

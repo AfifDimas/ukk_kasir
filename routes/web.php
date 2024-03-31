@@ -59,3 +59,5 @@ Route::get('/produk/data', 'ProdukController@data')->name('produk.data');
 Route::put('/produk/update', 'ProdukController@update')->name('produk.update');
 Route::delete('/produk/delete/{id}', 'ProdukController@delete')->name('produk.delete');
 Route::get('produk/selectProduk/{id}', 'ProdukController@selectProduk')->name('produk.selectProduk');
+
+Route::get('pelanggan/new', 'PelangganController@create')->name('pelanggan.new');

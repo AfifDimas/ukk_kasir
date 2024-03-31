@@ -29,6 +29,7 @@
                             <thead>
                                 <tr>
                                     <th width="5%" scope="col">No.</th>
+                                    <th scope="col">Nama Pembeli</th>
                                     <th scope="col">Jumlah Barang</th>
                                     <th scope="col">Total Harga</th>
                                     <th scope="col">Diskon %</th>
@@ -93,13 +94,16 @@
                         searchable: false,
                     },
                     {
+                        data: 'nama_pembeli'
+                    },
+                    {
                         data: 'jumlah_barang'
                     },
                     {
                         data: 'harga_total'
                     },
                     {
-                        data: 'diskon'
+                        data: 'diskon%'
                     },
                     {
                         data: 'subTotal'

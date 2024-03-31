@@ -28,7 +28,7 @@ class HomeController extends Controller
     {
         $users = User::count();
         $hariIni = date('Y-m-d');
-        $pendapatan = Penjualan::where('created_at', 'LIKE', '%'.$hariIni.'%')->SUM('total_harga');
+        $pendapatan = Penjualan::where('created_at', 'LIKE', '%'.$hariIni.'%')->SUM('subtotal');
         // dd($pendapatan);
         $produk = Produk::count();
         $transaksiHariIni = Penjualan::where('created_at', 'LIKE', '%'.$hariIni.'%')->count();
