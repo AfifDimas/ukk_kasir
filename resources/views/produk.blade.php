@@ -13,6 +13,17 @@
         </div>
     @endif
 
+    @if ($errors->any())
+        <div class="alert alert-danger border-left-danger alert-dismissible fade show" role="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
     @if (session('status'))
         <div class="alert alert-success border-left-success" role="alert">
             {{ session('status') }}
@@ -62,31 +73,28 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama Barang</label>
-                                <input type="text" class="form-control" id="nama" name="nama"
-                                    value="">
+                                <input type="text" class="form-control" id="nama" name="nama" value="">
                             </div>
                             <div class="mb-3">
                                 <label for="harga" class="form-label">harga Barang</label>
-                                <input type="number" class="form-control" id="harga" name="harga"
-                                    value="">
+                                <input type="number" class="form-control" id="harga" name="harga" value="">
                             </div>
                             <div class="mb-3">
                                 <label for="jumlah" class="form-label">Jumlah</label>
-                                <input type="number" class="form-control" id="jumlah" name="jumlah"
-                                    value="">
+                                <input type="number" class="form-control" id="jumlah" name="jumlah" value="">
                             </div>
                             <div class="mb-3">
                                 <label for="kode_produk" class="form-label">Kode Barang</label>
                                 <input type="text" class="form-control" id="kode_produk" name="kode_produk"
                                     value="">
                             </div>
-                        
+
 
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-danger" type="button" data-dismiss="modal">{{ __('Cancel') }}</button>
                         <button class="btn btn-primary" type="submit">Simpan</button>
-                    </form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -127,13 +135,13 @@
                                 <input type="text" class="form-control" id="kode_produk_edit" name="kode_produk_edit"
                                     value="">
                             </div>
-                        
+
 
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-danger" type="button" data-dismiss="modal">{{ __('Cancel') }}</button>
                         <button class="btn btn-primary" type="submit">Simpan</button>
-                    </form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -144,7 +152,6 @@
 
 @section('script')
     <script type="text/javascript">
-
         let table;
 
         $(function() {
@@ -185,39 +192,39 @@
 
         function handleEdit(id) {
             $.post(`{{ url('produk/selectProduk') }}/${id}`, {
-                '_token': $('[name=csrf-token]').attr('content'),
-                '_method': 'get',
-            })
-            .done( response => {
-                console.log(id);
-                
-                $('#id_produk').val(id)
-                $('#nama_edit').val(response.nama)
-                $('#harga_edit').val(response.harga)
-                $('#jumlah_edit').val(response.jumlah)
-                $('#kode_produk_edit').val(response.kode_produk)
+                    '_token': $('[name=csrf-token]').attr('content'),
+                    '_method': 'get',
+                })
+                .done(response => {
+                    console.log(id);
 
-                $('#modalEdit').modal('show')
-            })
-            .fail(erros => {
-                alert('yahahaha gagal');
-            })
+                    $('#id_produk').val(id)
+                    $('#nama_edit').val(response.nama)
+                    $('#harga_edit').val(response.harga)
+                    $('#jumlah_edit').val(response.jumlah)
+                    $('#kode_produk_edit').val(response.kode_produk)
+
+                    $('#modalEdit').modal('show')
+                })
+                .fail(erros => {
+                    alert('yahahaha gagal');
+                })
         }
 
         function handleHapus(id) {
             confirm('Apakah Anda Yakin Ingin Menghapus Data Ini!!!')
-            
+
             $.post(`{{ url('produk/delete') }}/${id}`, {
-                '_token': $('[name=csrf-token]').attr('content'),
-                '_method': 'delete',
-            })
-            .done( response => {
-                alert(response)
-                table.ajax.reload();
-            })
-            .fail(erros => {
-                alert('yahahaha gagal');
-            })
+                    '_token': $('[name=csrf-token]').attr('content'),
+                    '_method': 'delete',
+                })
+                .done(response => {
+                    alert(response)
+                    table.ajax.reload();
+                })
+                .fail(erros => {
+                    alert('yahahaha gagal');
+                })
         }
     </script>
 @endsection

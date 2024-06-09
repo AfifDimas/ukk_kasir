@@ -101,7 +101,7 @@
 
     <body onload="window.print()">
         <div class="invoice-box">
-            <center><h3>---TOKOKU---</h3></center>
+            <center><h3>---KASIRKU---</h3></center>
             <table cellpadding="0" cellspacing="0">
                 <tr class="top">
                     <td colspan="2">

@@ -50,7 +50,7 @@ class ProdukController extends Controller
             'nama' => 'required|min:3',
             'jumlah' => 'required|int|min:2',
             'harga' => 'required|int',
-            'kode_produk' => 'required'
+            'kode_produk' => 'required|unique:produks'
         ]);
 
         // $validate['kode_produk'] = 'P' .  

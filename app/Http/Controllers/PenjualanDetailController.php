@@ -67,8 +67,14 @@ class PenjualanDetailController extends Controller
 
     public function tambahJmlProduk(Request $request, $id)
     {
-
         $produkTransaksi = PenjualanDetail::find($id);
+        $produk = Produk::find($produkTransaksi->id_barang);
+        if($request->jumlah > $produk->jumlah) {
+        $produkTransaksi->jumlah = 0;
+        $produkTransaksi->total = $produkTransaksi->harga * 0;
+        $produkTransaksi->update();
+            error;
+        }
         $produkTransaksi->jumlah = $request->jumlah;
         $produkTransaksi->total = $produkTransaksi->harga * $request->jumlah;
         $produkTransaksi->update();

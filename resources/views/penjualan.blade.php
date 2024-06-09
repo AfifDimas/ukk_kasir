@@ -4,6 +4,17 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800">{{ __('Pesanan') }}</h1>
 
+    @if ($errors->any())
+        <div class="alert alert-danger border-left-danger alert-dismissible fade show" role="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
     <div class="row">
         <div class="col-md-8">
             <div class="card shadow">
@@ -122,7 +133,8 @@
                         </div>
                         <div class="form-group">
                             <label for="nomor_telepon">Nomor Telepon</label>
-                            <input type="text" class="form-control" name="nomor_telepon" id="nomor_telepon" required>
+                            <input class="form-control" name="nomor_telepon" id="nomor_telepon"  type="number" min="0" max="99999999999"
+                            onKeyUp="if(this.value>0899999999999){this.value='0815381513721';}else if(this.value<0){this.value='0';}">
                         </div>
 
                 </div>
@@ -195,6 +207,7 @@
             $('#modalNota').modal('show')
         </script>
     @endif
+
     <script type="text/javascript">
         let table, table1;
 
@@ -285,7 +298,8 @@
                         });
                     })
                     .fail(errors => {
-                        // alert('tidak dapat memperbarui data');
+                        alert('Maaf Data yang anda minta melebihi stok');
+
                     });
 
             });
